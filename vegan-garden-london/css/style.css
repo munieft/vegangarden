@@ -8,10 +8,10 @@
 :root{
   --bg:#F4ECDB; --bg-2:#EBE1C9; --bg-3:#E2D5B6;
   --text:#1D271B; --text-soft:#4A5446; --line:rgba(29,39,27,.16);
-  --brand:#2C4528; --accent:#5F7A2E; --em:#3E8E1E; --em-on-dark:#C8E66B; --pop:#B3245B; --pop-text:#fff;
+  --brand:#2C4528; --accent:#5F7A2E; --em:#6D8400; --em-on-dark:#D7DF3C; --em-wght:300; --pop:#B3245B; --pop-text:#fff;
   --btn:#1D271B; --btn-text:#F4ECDB;
-  --dark:#1C2E1A; --on-dark:#F4ECDB; --on-dark-soft:rgba(244,236,219,.8); --on-dark-accent:#B5C47B; --on-dark-line:rgba(244,236,219,.22);
-  --band:#2C4528; --band-text:#F4ECDB; --band-accent:#B5C47B;
+  --dark:#1C2E1A; --on-dark:#F4ECDB; --on-dark-soft:rgba(244,236,219,.8); --on-dark-accent:#D7DF3C; --on-dark-line:rgba(244,236,219,.22);
+  --band:#2C4528; --band-text:#F4ECDB; --band-accent:#D7DF3C;
   --quote:#B3245B; --quote-text:#FCEFF3;
   --head:rgba(244,236,219,.9);
   --dot:#D9A836; --open:#3F8A2E;
@@ -327,6 +327,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .rv.pop-in.in{transform:none}
 .steps .rv .num,.steps li.rv .num{transform:scale(0);transition:transform .6s var(--ease) calc(var(--i,0) * 90ms + .45s)}
 .steps li.rv.in .num{transform:none}
+
+/* ---------- italic text: a lighter weight ---------- */
+.display em,.h2 em,.quote-grid blockquote,.food .price,.steps .num,.hero-badge{font-weight:var(--em-wght)}
+@media (max-width:820px){.nav a:not(.btn){font-weight:var(--em-wght)}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
