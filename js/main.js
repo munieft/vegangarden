@@ -28,17 +28,28 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setNav(false); });
   window.addEventListener('resize', function () { if (window.innerWidth > 820) setNav(false); });
 
-  /* trading days: Fri, Sat, Sun (London time) */
-  var day;
-  try { day = new Intl.DateTimeFormat('en-GB', { weekday: 'short', timeZone: 'Europe/London' }).format(new Date()); }
-  catch (e) { day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()]; }
-  var open = ['Fri', 'Sat', 'Sun'].indexOf(day) > -1;
+  /* trading days: Sat and Sun (London time); closed for the annual holiday 24 Dec to 22 Jan */
+  var day, ymd;
+  try {
+    var now = new Date();
+    day = new Intl.DateTimeFormat('en-GB', { weekday: 'short', timeZone: 'Europe/London' }).format(now);
+    var pt = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/London' }).formatToParts(now);
+    var g = function (k) { return pt.filter(function (x) { return x.type === k; })[0].value; };
+    ymd = g('year') + g('month') + g('day');
+  } catch (e) {
+    var d0 = new Date(); day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d0.getDay()];
+    ymd = '' + d0.getFullYear() + ('0' + (d0.getMonth() + 1)).slice(-2) + ('0' + d0.getDate()).slice(-2);
+  }
+  var holiday = ymd >= '20261224' && ymd <= '20270122';
+  var open = !holiday && ['Sat', 'Sun'].indexOf(day) > -1;
   $$('[data-status]').forEach(function (el) {
     el.classList.toggle('is-open', open);
     var t = $('span', el);
-    if (t) t.textContent = open ? 'At Greenwich Market today' : (day === 'Thu' ? 'Back at the market tomorrow' : 'Back at the market on Friday');
+    if (t) t.textContent = holiday ? 'Closed for our annual holiday until 22 January'
+      : open ? 'At Greenwich Market today'
+      : (day === 'Fri' ? 'Back at the market tomorrow' : 'Back at the market on Saturday');
   });
-  $$('.day').forEach(function (d) { if (d.getAttribute('data-d') === day) d.classList.add('today'); });
+  if (!holiday) $$('.day').forEach(function (d) { if (d.getAttribute('data-d') === day) d.classList.add('today'); });
 
   /* scroll reveals: tag elements, stagger siblings */
   var groups = [
